@@ -10,9 +10,11 @@ FROM python:3.9-slim
 
 WORKDIR /app
 
-# Install system dependencies
+# Install system dependencies including PostgreSQL client libraries
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
+    libpq-dev \
+    postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy Python requirements and install dependencies

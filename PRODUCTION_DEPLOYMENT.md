@@ -48,6 +48,9 @@ VECTOR_FIELD=your-vector-field
 FEEDBACK_DIR=feedback_data
 FLASK_ENV=production
 PORT=5001
+
+# Database Configuration (for PostgreSQL)
+DATABASE_URL=postgres://username:password@host:port/database
 ```
 
 ### 3. Build and Start the Application
@@ -132,11 +135,26 @@ The application includes a `/health` endpoint that can be used with monitoring t
 - AWS CloudWatch
 - Azure Monitor
 
+### Database Configuration
+
+The application now uses PostgreSQL for the feedback system:
+
+1. Set up a PostgreSQL database server
+2. Configure the DATABASE_URL environment variable in your .env file:
+   ```
+   DATABASE_URL=postgres://username:password@host:port/database
+   ```
+3. Ensure the PostgreSQL server is accessible from the Docker container
+
 ### Backup Strategy
 
 Regularly backup:
 
-1. The feedback database (`votes.db`)
+1. The PostgreSQL database (using pg_dump):
+   ```bash
+   # Example backup command
+   pg_dump -h hostname -U username -d database_name -F c -f backup.dump
+   ```
 2. The feedback data directory
 3. Configuration files
 

@@ -180,9 +180,34 @@ Both Heroku and Netlify support continuous deployment from GitHub:
 - Heroku: Connect your GitHub repository in the Heroku dashboard
 - Netlify: Already set up if you deployed via the Netlify website
 
-### Database Considerations
+### Database Setup with Heroku Postgres
 
-If your application uses a database:
+The application now uses PostgreSQL for the feedback system. To set up the database:
 
-1. Consider using Heroku Postgres or another Heroku add-on
-2. Update your application to use the database URL provided by Heroku
+1. Add the Heroku Postgres add-on to your application:
+   ```bash
+   heroku addons:create heroku-postgresql:hobby-dev
+   ```
+
+2. Verify that the DATABASE_URL environment variable has been set:
+   ```bash
+   heroku config | grep DATABASE_URL
+   ```
+
+3. The application is already configured to use the DATABASE_URL environment variable provided by Heroku.
+
+4. If you need to migrate existing data from SQLite to PostgreSQL, you can use a tool like `pgloader`:
+   ```bash
+   # Install pgloader
+   sudo apt-get install pgloader  # For Ubuntu/Debian
+   # or
+   brew install pgloader  # For macOS with Homebrew
+
+   # Run the migration (replace with your actual Heroku DATABASE_URL)
+   pgloader votes.db postgres://username:password@host:port/database
+   ```
+
+5. To connect to your Heroku Postgres database directly:
+   ```bash
+   heroku pg:psql
+   ```
